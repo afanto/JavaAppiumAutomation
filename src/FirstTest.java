@@ -11,7 +11,7 @@ public class FirstTest {
         capabilities.setCapability("automationName","Appium");
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
-        capabilities.setCapability("app","");
+        capabilities.setCapability("app","/users/andreyfrantov/prog/JavaAppiumAutomation/apks/org.wikipedia.apk");
     }
 
 }

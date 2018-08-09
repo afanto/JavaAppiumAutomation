@@ -12,3 +12,5 @@ buildNumber.properties
 **/.mvn/wrapper/maven-wrapper.jar
 .idea/workspace.xml
 .idea
+.DS_Store
+._.DS_Store

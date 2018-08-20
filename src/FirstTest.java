@@ -41,7 +41,7 @@ public class FirstTest {
     {
         waitForElementByXpathAndClick(
                 "//*[contains(@text, 'Search Wikipedia')]",
-                "Cannot find Search Wikipedia input",
+                "Cannot find 'Search Wikipedia' input",
                 5
         );
 
@@ -54,6 +54,29 @@ public class FirstTest {
 
         waitForElementPresentByXpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']",
                 "Cannot find 'Object-oriented programming language"
+        );
+    }
+
+
+    @Test
+    public void testCancelSearch()
+    {
+        waitForElementByIdAndClick(
+                "org.wikipedia:id/search_container",
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementByIdAndClick(
+                "org.wikipedia:id/search_close_btn",
+                "Cannot find X to cancel search",
+                5
+        );
+
+        waitForElemetNotPresent(
+                "org.wikipedia:id/search_close_btn",
+                "Cannot find X to cancel search",
+                5
         );
     }
 
@@ -86,7 +109,32 @@ public class FirstTest {
         return element;
     }
 
+    private WebElement waitForElementPresentById(String id, String error_message, long timeoutInSeconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        By by = By.id(id);
+        return wait.until(
+                ExpectedConditions.presenceOfElementLocated(by)
+        );
+    }
 
+    private  WebElement waitForElementByIdAndClick(String id, String error_message, long timeOutInSeconds)
+    {
+        WebElement element = waitForElementPresentById(id, error_message, timeOutInSeconds);
+        element.click();
+        return element;
+    }
 
+    private boolean waitForElemetNotPresent(String id, String error_message, long timeoutInSeconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
+        wait.withMessage(error_message + "\n");
+        By by = By.id(id);
+        return wait.until(
+                ExpectedConditions.invisibilityOfElementLocated(by)
+        );
+
+    }
 
 }

@@ -95,7 +95,7 @@ public class FirstTest {
                 5
         );
 
-        waitForElemetNotPresent(
+        waitForElementNotPresent(
                 By.id("org.wikipedia:id/search_close_btn"),
                 "Cannot find X to cancel search",
                 5
@@ -137,8 +137,60 @@ public class FirstTest {
                 "Java (programming language)",
                 articleTittle
         );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                5
+        );
     }
 
+    @Test
+    public void testSearchAndCancel()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Test automation",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Test automation')]"),
+                "Cannot find 'Test automation' article",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[contains(@text, 'Test automation management tools')]"),
+                "Cannot find 'Test automation management tools' article",
+                5
+        );
+
+        waitForElementAndClear(
+                By.id("org.wikipedia:id/search_src_text"),
+                "Cannot find search field",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.xpath("//*[contains(@text, 'Test automation')]"),
+                "Cannot find 'Test automation' article",
+                5
+        );
+
+        waitForElementNotPresent(
+                By.xpath("//*[contains(@text, 'Test automation management tools')]"),
+                "Cannot find 'Test automation management tools' article",
+                5
+        );
+    }
 
 
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds)
@@ -170,7 +222,7 @@ public class FirstTest {
     }
 
 
-    private boolean waitForElemetNotPresent(By by, String errorMessage, long timeoutInSeconds)
+    private boolean waitForElementNotPresent(By by, String errorMessage, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
         wait.withMessage(errorMessage + "\n");

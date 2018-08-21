@@ -46,7 +46,7 @@ public class FirstTest {
                 5
         );
 
-        verifyFieldText(
+        verifyElementText(
                 By.id("org.wikipedia:id/search_src_text"),
                 "Cannot find search field",
                 5,
@@ -103,7 +103,7 @@ public class FirstTest {
     }
 
     @Test
-    public  void testCompareArticleTittle()
+    public void testCompareArticleTittle()
     {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
@@ -138,6 +138,8 @@ public class FirstTest {
                 articleTittle
         );
     }
+
+
 
     private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds)
     {
@@ -185,17 +187,17 @@ public class FirstTest {
         return element;
     }
 
-    private WebElement verifyFieldText(By by, String errorMessage, long timeoutInSeconds, String expectedText)
+    private WebElement verifyElementText(By by, String errorMessage, long timeoutInSeconds, String expectedText)
     {
-        WebElement field = waitForElementPresent(by, errorMessage, timeoutInSeconds);
+        WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
 
-        String fieldText = field.getAttribute("text");
+        String elementText = element.getAttribute("text");
 
         Assert.assertEquals(
                 "Unexpected field text",
                 expectedText,
-                fieldText
+                elementText
         );
-        return field;
+        return element;
     }
 }

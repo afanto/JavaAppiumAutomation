@@ -124,77 +124,77 @@ public class FirstTest {
                 5
         );
 
-        WebElement tittle_element = waitForElementPresent(
+        WebElement tittleElement = waitForElementPresent(
                 By.id("org.wikipedia:id/view_page_title_text"),
                 "Cannot find article tittle",
                 15
         );
 
-        String article_tittle = tittle_element.getAttribute("text");
+        String articleTittle = tittleElement.getAttribute("text");
 
         Assert.assertEquals(
                 "We see unexpected tittle!",
                 "Java (programming language)",
-                article_tittle
+                articleTittle
         );
     }
 
-    private WebElement waitForElementPresent(By by, String error_message, long timeoutInSeconds)
+    private WebElement waitForElementPresent(By by, String errorMessage, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_message + "\n");
+        wait.withMessage(errorMessage + "\n");
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
         );
     }
 
-    private WebElement waitForElementPresent(By by, String error_message)
+    private WebElement waitForElementPresent(By by, String errorMessage)
     {
-        return waitForElementPresent(by, error_message, 5);
+        return waitForElementPresent(by, errorMessage, 5);
     }
 
-    private  WebElement waitForElementAndClick(By by, String error_message, long timeOutInSeconds)
+    private  WebElement waitForElementAndClick(By by, String errorMessage, long timeOutInSeconds)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeOutInSeconds);
+        WebElement element = waitForElementPresent(by, errorMessage, timeOutInSeconds);
         element.click();
         return element;
     }
 
-    private  WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeOutInSeconds)
+    private  WebElement waitForElementAndSendKeys(By by, String value, String errorMessage, long timeOutInSeconds)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeOutInSeconds);
+        WebElement element = waitForElementPresent(by, errorMessage, timeOutInSeconds);
         element.sendKeys(value);
         return element;
     }
 
 
-    private boolean waitForElemetNotPresent(By by, String error_message, long timeoutInSeconds)
+    private boolean waitForElemetNotPresent(By by, String errorMessage, long timeoutInSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(error_message + "\n");
+        wait.withMessage(errorMessage + "\n");
         return wait.until(
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
 
     }
 
-    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds)
+    private WebElement waitForElementAndClear(By by, String errorMessage, long timeoutInSeconds)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
         element.clear();
         return element;
     }
 
-    private WebElement verifyFieldText(By by, String error_message, long timeoutInSeconds, String expectedText)
+    private WebElement verifyFieldText(By by, String errorMessage, long timeoutInSeconds, String expectedText)
     {
-        WebElement field = waitForElementPresent(by, error_message, timeoutInSeconds);
+        WebElement field = waitForElementPresent(by, errorMessage, timeoutInSeconds);
 
-        String field_text = field.getAttribute("text");
+        String fieldText = field.getAttribute("text");
 
         Assert.assertEquals(
                 "Unexpected field text",
                 expectedText,
-                field_text
+                fieldText
         );
         return field;
     }

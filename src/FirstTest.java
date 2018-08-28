@@ -292,6 +292,18 @@ public class FirstTest {
                 5
         );
 
+        waitForElementPresent(
+                By.xpath("//*[@text='Change language']"),
+                "Cannot find button to 'Add to reading list'",
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//*[@text='Add to reading list']"),
+                "Cannot find button to 'Add to reading list'",
+                5
+        );
+
         waitForElementAndClick(
                 By.xpath("//*[@text='Add to reading list']"),
                 "Cannot find button to 'Add to reading list'",
@@ -310,9 +322,11 @@ public class FirstTest {
                 5
         );
 
+        String nameOfFolder = "Learning programming";
+
         waitForElementAndSendKeys(
                 By.id("org.wikipedia:id/text_input"),
-                "Learning programming",
+                nameOfFolder,
                 "Cannot put text into 'Name of the list' field",
                 5
         );
@@ -336,8 +350,8 @@ public class FirstTest {
         );
 
         waitForElementAndClick(
-                By.xpath("//*[@text='Learning programming']"),
-                "Cannot find 'Learning programming' list",
+                By.xpath("//*[@text='" + nameOfFolder + "']"),
+                "Cannot find " + nameOfFolder + " list",
                 5
         );
 
@@ -351,6 +365,77 @@ public class FirstTest {
                 "Cannot delete saved article",
                 5
         );
+    }
+
+    @Test
+    public void testAmountOfNotEmptySearch()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String searchLine = "Linkin park discography";
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchLine,
+                "Cannot find search input",
+                5
+        );
+
+        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
+
+        waitForElementPresent(
+                By.xpath(searchResultLocator),
+                "Cannot find anything by the request " + searchLine,
+                15
+        );
+
+        int amounOfSearchResults = getAmountOfElements(
+                By.xpath(searchResultLocator)
+        );
+
+        Assert.assertTrue(
+                "Found to few results",
+                amounOfSearchResults > 0
+        );
+    }
+
+    @Test
+    public void testNoResultsFounds()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String searchLine = "zxcvasdfqwer";
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchLine,
+                "Cannot find search input",
+                5
+        );
+
+        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
+        String emptyResultLabel = "//*[@text='No results found']";
+
+        waitForElementPresent(
+                By.xpath(emptyResultLabel),
+                "Cannot find anything by the request " + searchLine,
+                15
+        );
+
+        assertElementNotPresent(
+                By.xpath(searchResultLocator),
+                "Found some results by request by request" + searchLine
+        );
+
+
     }
 
 
@@ -444,7 +529,7 @@ public class FirstTest {
         TouchAction action = new TouchAction(driver);
         action
                 .press(right_x, middle_y)
-                .waitAction(150)
+                .waitAction(300)
                 .moveTo(left_x, middle_y)
                 .release()
                 .perform();
@@ -468,6 +553,21 @@ public class FirstTest {
 
             swipeUpQuick();
             ++alreadySwiped;
+        }
+    }
+
+    private int getAmountOfElements(By by)
+    {
+        List elements = driver.findElements(by);
+        return elements.size();
+    }
+
+    private void assertElementNotPresent(By by, String errorMessage)
+    {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements > 0) {
+            String defaultMessage = "An element '" + by.toString() + "' supposed to be not present";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
         }
     }
 }

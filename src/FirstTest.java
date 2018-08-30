@@ -142,12 +142,6 @@ public class FirstTest {
                 "Java (programming language)",
                 articleTittle
         );
-
-        waitForElementAndClear(
-                By.id("org.wikipedia:id/search_src_text"),
-                "Cannot find search field",
-                5
-        );
     }
 
     @Test
@@ -739,7 +733,34 @@ public class FirstTest {
                 "Appium",
                 articleTittle
         );
+    }
 
+    @Test
+    public void testAssertTittle()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "Java",
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language",
+                5
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Element not found"
+        );
     }
 
 
@@ -879,6 +900,15 @@ public class FirstTest {
     {
       WebElement element = waitForElementPresent(by, errorMessage, timeoutInSeconds);
      return element.getAttribute(attribute);
+    }
+
+    private void assertElementPresent(By by, String errorMessage)
+    {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements == 0) {
+            String defaultMessage = "An element '" + by.toString() + "' supposed to be present";
+            throw new AssertionError(defaultMessage + " " + errorMessage);
+        }
     }
 }
 

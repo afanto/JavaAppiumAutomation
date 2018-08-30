@@ -14,3 +14,6 @@ buildNumber.properties
 .idea
 .DS_Store
 ._.DS_Store
+out/production/JavaAppiumAutomation/FirstTest.class
+out/production/JavaAppiumAutomation/lib/CoreTestCase.class
+out/production/JavaAppiumAutomation/FirstTest.class

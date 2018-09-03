@@ -43,7 +43,8 @@ public class MainPageObject {
 
     public  WebElement waitForElementAndSendKeys(By by, String value, String errorMessage, long timeOutInSeconds)
     {
-        WebElement element = waitForElementPresent(by, errorMessage, timeOutInSeconds);
+        waitForElementPresent(by, errorMessage, timeOutInSeconds);
+        WebElement element = driver.findElement(by);
         element.sendKeys(value);
         return element;
     }

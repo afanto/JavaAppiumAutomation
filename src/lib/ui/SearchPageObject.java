@@ -9,7 +9,8 @@ public class SearchPageObject extends MainPageObject{
         SEARCH_INIT_ELEMENT = "//*[contains(@text, 'Search Wikipedia')]",
         SEARCH_INPUT = "//*[contains(@text, 'Search…')]",
         SEARCH_CANCEL_BUTTON = "org.wikipedia:id/search_close_btn",
-        SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']";
+        SEARCH_RESULT_BY_SUBSTRING_TPL = "//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
+        SEARCH_RESULT_ELEMENT = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
 
 
     public SearchPageObject(AppiumDriver driver)
@@ -61,4 +62,15 @@ public class SearchPageObject extends MainPageObject{
         String search_result_xpath = getResultSearchElement(substring);
         this.waitForElementAndClick(By.xpath(search_result_xpath), "Cannot find and click search result with substring", 10);
     }
+
+    public int getAmountOfFoundArticles()
+    {
+        this.waitForElementPresent(
+                By.xpath(SEARCH_RESULT_ELEMENT),
+                "Cannot find anything by the request ",
+                15
+        );
+        return this.getAmountOfElements(By.xpath(SEARCH_RESULT_ELEMENT));
+    }
 }
+

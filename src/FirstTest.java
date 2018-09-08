@@ -198,36 +198,16 @@ public class FirstTest extends CoreTestCase {
     }
 
     @Test
-    public void testNoResultsFounds()
+    public void testAmountOfEmptySearch()
     {
-        MainPageObject.waitForElementAndClick(
-                By.id("org.wikipedia:id/search_container"),
-                "Cannot find 'Search Wikipedia' input",
-                5
-        );
-
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
         String searchLine = "zxcvasdfqwer";
+        SearchPageObject.typeSearchLine(searchLine);
+        SearchPageObject.waitForEmptyResultsLabel();
+        SearchPageObject.assertThereIsNoResultOfSearch();
 
-        MainPageObject.waitForElementAndSendKeys(
-                By.xpath("//*[contains(@text, 'Search…')]"),
-                searchLine,
-                "Cannot find search input",
-                5
-        );
 
-        String searchResultLocator = "//*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']";
-        String emptyResultLabel = "//*[@text='No results found']";
-
-        MainPageObject.waitForElementPresent(
-                By.xpath(emptyResultLabel),
-                "Cannot find anything by the request " + searchLine,
-                15
-        );
-
-        MainPageObject.assertElementNotPresent(
-                By.xpath(searchResultLocator),
-                "Found some results by request by request" + searchLine
-        );
     }
 
     @Test

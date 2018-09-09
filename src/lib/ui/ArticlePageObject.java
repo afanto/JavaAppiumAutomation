@@ -97,6 +97,36 @@ public class ArticlePageObject extends MainPageObject {
         );
     }
 
+    public void addArticleToExistingList(String name_of_folder)
+    {
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_BUTTON),
+                "Cannot find 'More options' button",
+                5
+        );
+
+        this.waitForElementPresent(
+                By.xpath(OPTIONS_CHANGE_LANGUAGE_BUTTON),
+                "Cannot find 'Change Language' button",
+                5
+        );
+
+        this.waitForElementPresent(
+                By.xpath(OPTIONS_ADD_TO_READING_LIST_BUTTON),
+                "Cannot find 'Add to reading list' button",
+                5
+        );
+
+        this.waitForElementAndClick(
+                By.xpath(OPTIONS_ADD_TO_READING_LIST_BUTTON),
+                "Cannot find 'Add to reading list' button",
+                5
+        );
+
+        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject.openFolderByName(name_of_folder);
+    }
+
     public void closeArticle()
     {
         this.waitForElementAndClick(

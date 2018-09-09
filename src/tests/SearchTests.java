@@ -3,6 +3,10 @@ package tests;
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
 import org.junit.Test;
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class SearchTests extends CoreTestCase {
 
@@ -22,8 +26,8 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject SearchPageObject = new SearchPageObject(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.waitForCancelButtonToAppear();
-        SearchPageObject.clickCancelSeach();
-        SearchPageObject.waitForCancelButtonToDissappear();
+        SearchPageObject.clickCancelSearch();
+        SearchPageObject.waitForCancelButtonToDisappear();
     }
 
     @Test
@@ -50,5 +54,36 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject.typeSearchLine(searchLine);
         SearchPageObject.waitForEmptyResultsLabel();
         SearchPageObject.assertThereIsNoResultOfSearch();
+    }
+
+    @Test
+    public void testSearchAndCancel()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Test automation");
+        SearchPageObject.waitForSearchResult("Test automation");
+        SearchPageObject.waitForSearchResult("Test automation management tools");
+        SearchPageObject.clearSearchLine();
+        SearchPageObject.waitForSearchResultNotPresent("Test automation' article");
+        SearchPageObject.waitForSearchResultNotPresent("Test automation management tools");
+    }
+
+    @Test
+    public void testSearchResultsAreRelevant()
+    {
+        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject.initSearchInput();
+        SearchPageObject.typeSearchLine("Java");
+
+        List<WebElement> listOfElements = driver.findElements(By.id("org.wikipedia:id/page_list_item_title"));
+
+        for (int i =0; i < listOfElements.size(); i++)
+        {
+            WebElement element = listOfElements.get(i);
+            assertTrue(
+                    "Text 'Java' not found in search result",
+                    element.getAttribute("text").contains("Java"));
+        }
     }
 }

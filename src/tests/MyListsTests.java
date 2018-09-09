@@ -22,7 +22,6 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject.waitForTittleElement();
         String article_title = ArticlePageObject.getArticleTittle();
         String name_of_folder = "Learning programming";
-
         ArticlePageObject.addArticleToMyList(name_of_folder);
         ArticlePageObject.closeArticle();
 
@@ -30,8 +29,8 @@ public class MyListsTests extends CoreTestCase {
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.waitForArticleToAppearByTittle(name_of_folder);
         MyListsPageObject.openFolderByName(name_of_folder);
+        MyListsPageObject.waitForArticleToAppearByTittle(article_title);
         MyListsPageObject.swipeByArticleToDelete(article_title);
     }
 

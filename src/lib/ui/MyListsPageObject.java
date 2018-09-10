@@ -24,6 +24,16 @@ public class MyListsPageObject extends MainPageObject {
         super(driver);
     }
 
+    public void waitForFolderToAppear(String name_of_folder)
+    {
+        String folder_name_xpath = getFolderByName(name_of_folder);
+        this.waitForElementPresent(
+                By.xpath(folder_name_xpath),
+                "Cannot find folder by name " + name_of_folder,
+                5
+        );
+    }
+
     public void openFolderByName(String name_of_folder)
     {
         String folder_name_xpath = getFolderByName(name_of_folder);

@@ -56,16 +56,20 @@ public class MyListsTests extends CoreTestCase {
     @Test
     public void testSaveTwoArticlesAndDeleteOne()
     {
+        String first_substring = "Object-oriented programming language";
+        String second_substring = "Seed of the coffee plant";
+
+
         //add first article
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
+        SearchPageObject.clickByArticleWithSubstring(first_substring);
 
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
-        ArticlePageObject.waitForTittleElement();
-        String first_article_title = ArticlePageObject.getArticleTittle();
+        ArticlePageObject.waitForSubtittleElement(first_substring);
+        String first_article_subtittle = ArticlePageObject.getArticleSubtittle(first_substring);
 
         if(Platform.getInstance().isAndroid()) {
             ArticlePageObject.addArticleToMyList(name_of_folder);
@@ -80,16 +84,16 @@ public class MyListsTests extends CoreTestCase {
         SearchPageObject.initSearchInput();
         SearchPageObject.clearSearchLine();
         SearchPageObject.typeSearchLine("Coffee bean");
-        SearchPageObject.clickByArticleWithSubstring("Seed of the coffee plant");
+        SearchPageObject.clickByArticleWithSubstring(second_substring);
 
-        ArticlePageObject.waitForTittleElement();
-        String second_article_title = ArticlePageObject.getArticleTittle();
+        ArticlePageObject.waitForSubtittleElement(second_substring);
+        String second_article_subtitle = ArticlePageObject.getArticleSubtittle(second_substring);
+
 
         if(Platform.getInstance().isAndroid()) {
-            ArticlePageObject.addArticleToMyList(name_of_folder);
+            ArticlePageObject.addArticleToExistingList(name_of_folder);
         } else {
             ArticlePageObject.addArticleToMySaved();
-            ArticlePageObject.closeArticle();
         }
 
         ArticlePageObject.closeArticle();
@@ -98,22 +102,31 @@ public class MyListsTests extends CoreTestCase {
         NavigationUI.clickMyLists();
 
         MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-        MyListsPageObject.waitForFolderToAppear(name_of_folder);
-        MyListsPageObject.openFolderByName(name_of_folder);
 
-        MyListsPageObject.waitForArticleToAppearByTittle(first_article_title);
-        MyListsPageObject.waitForArticleToAppearByTittle(second_article_title);
-        MyListsPageObject.swipeByArticleToDelete(first_article_title);
-        MyListsPageObject.waitForArticleToDisappearByTittle(first_article_title);
-        MyListsPageObject.waitForArticleToAppearByTittle(second_article_title);
-        SearchPageObject.clickByArticleWithSubstring(second_article_title);
-        ArticlePageObject.waitForTittleElement();
-        String opened_article_tittle = ArticlePageObject.getArticleTittle();
+        if(Platform.getInstance().isAndroid()) {
+            MyListsPageObject.waitForFolderToAppear(name_of_folder);
+            MyListsPageObject.openFolderByName(name_of_folder);
+        }
+
+        MyListsPageObject.waitForArticleToAppearBySubtitle(first_article_subtittle);
+        MyListsPageObject.waitForArticleToAppearBySubtitle(second_article_subtitle);
+        MyListsPageObject.swipeByArticleToDeleteWithSubtittle(first_article_subtittle);
+        MyListsPageObject.waitForArticleToDisappearBySubtittle(first_article_subtittle);
+        MyListsPageObject.waitForArticleToAppearBySubtitle(second_article_subtitle);
+
+        if (Platform.getInstance().isAndroid()) {
+            SearchPageObject.clickByArticleWithSubstring(second_article_subtitle.toLowerCase());
+        } else {
+            SearchPageObject.clickByArticleWithSubstring(second_article_subtitle);
+        }
+
+        ArticlePageObject.waitForSubtittleElement(second_article_subtitle);
+        String opened_article_subtittle = ArticlePageObject.getArticleSubtittle(second_article_subtitle);
 
         assertEquals(
-                "We see unexpected tittle!",
-                second_article_title,
-                opened_article_tittle
+                "We see unexpected subtitle!",
+                second_article_subtitle,
+                opened_article_subtittle
         );
     }
 }

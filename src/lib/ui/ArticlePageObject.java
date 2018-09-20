@@ -3,13 +3,13 @@ package lib.ui;
 import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import lib.ui.factories.MyListsPageObjectFactory;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 abstract public class ArticlePageObject extends MainPageObject {
 
     protected static String
         TITTLE,
+        SUBTITTLE_BY_SUBSTRING_TPL,
         FOOTER_ELEMENT,
         OPTIONS_BUTTON,
         OPTIONS_CHANGE_LANGUAGE_BUTTON,
@@ -19,7 +19,12 @@ abstract public class ArticlePageObject extends MainPageObject {
         MY_LIST_OK_BUTTON,
         CLOSE_ARTICLE_BUTTON;
 
-
+    /*TEMPLATES_METHODS*/
+    private static String getArticleSubtitleLocator(String substring)
+    {
+        return SUBTITTLE_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
+    }
+    /*TEMPLATES_METHODS*/
 
     public ArticlePageObject(AppiumDriver driver)
     {
@@ -31,6 +36,13 @@ abstract public class ArticlePageObject extends MainPageObject {
         return this.waitForElementPresent(TITTLE, "Cannot find article tittle on page", 15);
     }
 
+    public WebElement waitForSubtittleElement(String substring)
+    {
+        String article_subtitle_xpath = getArticleSubtitleLocator(substring);
+        return this.waitForElementPresent(article_subtitle_xpath, "Cannot find article subtittle on page", 15);
+    }
+
+
     public String getArticleTittle()
     {
         WebElement title_element = waitForTittleElement();
@@ -38,6 +50,16 @@ abstract public class ArticlePageObject extends MainPageObject {
             return title_element.getAttribute("text");
         } else {
             return title_element.getAttribute("name");
+        }
+    }
+
+    public String getArticleSubtittle(String substring)
+    {
+        WebElement subtitle_element = waitForSubtittleElement(substring);
+        if (Platform.getInstance().isAndroid()) {
+            return subtitle_element.getAttribute("text");
+        } else {
+            return subtitle_element.getAttribute("name");
         }
     }
 

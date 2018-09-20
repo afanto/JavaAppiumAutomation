@@ -1,15 +1,20 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListsPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
 import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
+
+    private static final String name_of_folder = "Learning programming";
 
     @Test
     public void testSaveFirstArticleToMyList()
@@ -23,18 +28,29 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTittleElement();
         String article_title = ArticlePageObject.getArticleTittle();
-        String name_of_folder = "Learning programming";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
+
+        if(Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticleToMySaved();
+            ArticlePageObject.closeArticle();
+        }
+
         ArticlePageObject.closeArticle();
 
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.waitForFolderToAppear(name_of_folder);
-        MyListsPageObject.openFolderByName(name_of_folder);
-        MyListsPageObject.waitForArticleToAppearByTittle(article_title);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+
+        if (Platform.getInstance().isAndroid()) {
+            MyListsPageObject.waitForFolderToAppear(name_of_folder);
+            MyListsPageObject.openFolderByName(name_of_folder);
+            MyListsPageObject.waitForArticleToAppearByTittle(article_title);
+        }
+
         MyListsPageObject.swipeByArticleToDelete(article_title);
+
     }
 
     @Test
@@ -49,7 +65,6 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTittleElement();
         String first_article_title = ArticlePageObject.getArticleTittle();
-        String name_of_folder = "Learning programming";
         ArticlePageObject.addArticleToMyList(name_of_folder);
         ArticlePageObject.closeArticle();
 
@@ -62,10 +77,10 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject.addArticleToExistingList(name_of_folder);
         ArticlePageObject.closeArticle();
 
-        NavigationUI NavigationUI = new NavigationUI(driver);
+        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
         NavigationUI.clickMyLists();
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         MyListsPageObject.waitForFolderToAppear(name_of_folder);
         MyListsPageObject.openFolderByName(name_of_folder);
 

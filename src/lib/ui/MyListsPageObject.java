@@ -1,12 +1,13 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
-public class MyListsPageObject extends MainPageObject {
+abstract public class MyListsPageObject extends MainPageObject {
 
-    public static final String
-        FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
-        ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITTLE}']";
+    protected static String
+        FOLDER_BY_NAME_TPL,
+        ARTICLE_BY_TITLE_TPL;
 
     private static String getFolderByName(String name_of_folder)
     {
@@ -71,6 +72,10 @@ public class MyListsPageObject extends MainPageObject {
                 article_xpath,
                 "Cannot find saved article " + article_tittle
         );
+
+            if (Platform.getInstance().isIOS()) {
+                this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find and click article delete button");
+            }
 
         this.waitForArticleToDisappearByTittle(article_tittle);
     }

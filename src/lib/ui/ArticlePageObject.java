@@ -2,6 +2,7 @@ package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
 import lib.Platform;
+import lib.ui.factories.MyListsPageObjectFactory;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
@@ -134,7 +135,7 @@ abstract public class ArticlePageObject extends MainPageObject {
                 5
         );
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
         MyListsPageObject.openFolderByName(name_of_folder);
     }
 
@@ -145,5 +146,10 @@ abstract public class ArticlePageObject extends MainPageObject {
                 "Cannot find 'X' button",
                 5
         );
+    }
+
+    public void addArticleToMySaved()
+    {
+        this.waitForElementAndClick(OPTIONS_ADD_TO_READING_LIST_BUTTON, "Cannot find option to add to reading list", 5);
     }
 }

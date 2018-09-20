@@ -58,6 +58,7 @@ public class MyListsTests extends CoreTestCase {
     {
         //add first article
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
@@ -65,16 +66,32 @@ public class MyListsTests extends CoreTestCase {
         ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTittleElement();
         String first_article_title = ArticlePageObject.getArticleTittle();
-        ArticlePageObject.addArticleToMyList(name_of_folder);
+
+        if(Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticleToMySaved();
+            ArticlePageObject.closeArticle();
+        }
+
         ArticlePageObject.closeArticle();
 
         //add second article
         SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Appium");
-        SearchPageObject.clickByArticleWithSubstring("Appium");
+        SearchPageObject.clearSearchLine();
+        SearchPageObject.typeSearchLine("Coffee bean");
+        SearchPageObject.clickByArticleWithSubstring("Seed of the coffee plant");
+
         ArticlePageObject.waitForTittleElement();
         String second_article_title = ArticlePageObject.getArticleTittle();
-        ArticlePageObject.addArticleToExistingList(name_of_folder);
+
+        if(Platform.getInstance().isAndroid()) {
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticleToMySaved();
+            ArticlePageObject.closeArticle();
+        }
+
         ArticlePageObject.closeArticle();
 
         NavigationUI NavigationUI = NavigationUIFactory.get(driver);

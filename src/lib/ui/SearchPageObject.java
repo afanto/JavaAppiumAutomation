@@ -1,6 +1,7 @@
 package lib.ui;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
 
 abstract public class SearchPageObject extends MainPageObject{
 
@@ -9,6 +10,7 @@ abstract public class SearchPageObject extends MainPageObject{
         SEARCH_INPUT,
         SEARCH_LINE,
         SEARCH_CANCEL_BUTTON,
+        SEARCH_CLEAR_BUTTON,
         SEARCH_RESULT_BY_SUBSTRING_TPL,
         SEARCH_RESULT_ELEMENT,
         SEARCH_RESULT_TITTLE,
@@ -55,11 +57,15 @@ abstract public class SearchPageObject extends MainPageObject{
 
     public void clearSearchLine()
     {
-        this.waitForElementAndClear(
-                SEARCH_LINE,
-                "Cannot find search field",
-                5
-        );
+        if(Platform.getInstance().isAndroid()) {
+            this.waitForElementAndClear(
+                    SEARCH_LINE,
+                    "Cannot find search field",
+                    5
+            );
+        } else {
+            this.waitForElementAndClick(SEARCH_CLEAR_BUTTON, "Cannot find and click search clear button", 5);
+        }
     }
 
     public void waitForSearchResult(String substring)

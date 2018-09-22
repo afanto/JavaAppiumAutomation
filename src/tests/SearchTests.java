@@ -63,11 +63,11 @@ public class SearchTests extends CoreTestCase {
         SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Test automation");
-        SearchPageObject.waitForSearchResult("Test automation");
-        SearchPageObject.waitForSearchResult("Test automation management tools");
+        SearchPageObject.waitForSearchResult("est automation");
+        SearchPageObject.waitForSearchResult("est automation management tools");
         SearchPageObject.clearSearchLine();
-        SearchPageObject.waitForSearchResultNotPresent("Test automation' article");
-        SearchPageObject.waitForSearchResultNotPresent("Test automation management tools");
+        SearchPageObject.waitForSearchResultNotPresent("est automation' article");
+        SearchPageObject.waitForSearchResultNotPresent("est automation management tools");
     }
 
     @Test

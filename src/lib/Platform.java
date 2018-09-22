@@ -93,10 +93,10 @@ public class Platform {
 
         Map<String, Object> mobileEmulation = new HashMap<String, Object>();
         mobileEmulation.put("deviceMetrics", deviceMetrics);
-        mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; U; Android 4.2.1; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30");
+        mobileEmulation.put("userAgent", "Mozilla/5.0 (Linux; U; Android 4.2.2; en-gb; Build/KLP) AppleWebKit/534.30 (KHTML, like Gecko) Version/4.0 Safari/534.30");
 
         ChromeOptions ChromeOptions = new ChromeOptions();
-        ChromeOptions.addArguments("Window-size=360,640");
+        ChromeOptions.addArguments("window-size=360,640");
 
         return ChromeOptions;
     }

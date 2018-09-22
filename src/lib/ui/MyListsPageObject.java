@@ -1,6 +1,5 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -9,7 +8,8 @@ abstract public class MyListsPageObject extends MainPageObject {
     protected static String
         FOLDER_BY_NAME_TPL,
         ARTICLE_BY_TITLE_TPL,
-        ARTICLE_BY_SUBTITLE_TPL;
+        ARTICLE_BY_SUBTITLE_TPL,
+        REMOVE_FROM_SAVED_BUTTON;
 
     /*TEMPLATE METHODS*/
 
@@ -21,6 +21,11 @@ abstract public class MyListsPageObject extends MainPageObject {
     private static String getSavedArticleXpathByTittle(String article_tittle)
     {
         return ARTICLE_BY_TITLE_TPL.replace("{TITTLE}", article_tittle);
+    }
+
+    private static String getRemoveButtonByTittle(String article_tittle)
+    {
+        return REMOVE_FROM_SAVED_BUTTON.replace("{TITTLE}", article_tittle);
     }
 
     private static String getSavedArticleXpathBySubtittle(String article_subtittle)
@@ -103,13 +108,27 @@ abstract public class MyListsPageObject extends MainPageObject {
     {
         this.waitForArticleToAppearByTittle(article_tittle);
         String article_xpath = getSavedArticleXpathByTittle(article_tittle);
-        this.swipeElementToLeft(
-                article_xpath,
-                "Cannot find saved article " + article_tittle
-        );
+
+        if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
+            this.swipeElementToLeft(
+                    article_xpath,
+                    "Cannot find saved article " + article_tittle
+            );
+        } else {
+            String remove_locator = getRemoveButtonByTittle(REMOVE_FROM_SAVED_BUTTON);
+            this.waitForElementAndClick(
+                    remove_locator,
+                    "Cannot find and click button to remove article from list",
+                    10
+            );
+        }
 
             if (Platform.getInstance().isIOS()) {
                 this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find and click article delete button");
+            }
+
+            if (Platform.getInstance().isMW()) {
+                driver.navigate().refresh();
             }
 
         this.waitForArticleToDisappearByTittle(article_tittle);

@@ -15,6 +15,7 @@ abstract public class ArticlePageObject extends MainPageObject {
         OPTIONS_BUTTON,
         OPTIONS_CHANGE_LANGUAGE_BUTTON,
         OPTIONS_ADD_TO_READING_LIST_BUTTON,
+        OPTIONS_REMOVE_FROM_READING_LIST_BUTTON,
         ADD_TO_MY_LIST_OVERLAY,
         MY_LIST_NAME_INPUT,
         MY_LIST_OK_BUTTON,
@@ -172,15 +173,37 @@ abstract public class ArticlePageObject extends MainPageObject {
 
     public void closeArticle()
     {
-        this.waitForElementAndClick(
-                CLOSE_ARTICLE_BUTTON,
-                "Cannot find 'X' button",
-                5
-        );
+        if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
+            this.waitForElementAndClick(
+                    CLOSE_ARTICLE_BUTTON,
+                    "Cannot find 'X' button",
+                    5
+            );
+        } else {
+            System.out.println("Method closeArticle() does nothing for platform " + Platform.getInstance().getPlatformVar());
+        }
     }
 
     public void addArticleToMySaved()
     {
+        if (Platform.getInstance().isMW()) {
+            this.removeArticleFromSavedIfPresent();
+        }
         this.waitForElementAndClick(OPTIONS_ADD_TO_READING_LIST_BUTTON, "Cannot find option to add to reading list", 5);
+    }
+
+    public void removeArticleFromSavedIfPresent()
+    {
+        if (this.isElementPresent(OPTIONS_REMOVE_FROM_READING_LIST_BUTTON)) {
+            this.waitForElementAndClick(
+                    OPTIONS_REMOVE_FROM_READING_LIST_BUTTON,
+                    "Cannot find and click button to remove from reading list button",
+                    1
+            );
+            this.waitForElementPresent(
+                    OPTIONS_ADD_TO_READING_LIST_BUTTON,
+                    "Cannot find button to add to reading list"
+                    );
+        }
     }
 }

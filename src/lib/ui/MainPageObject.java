@@ -46,6 +46,24 @@ public class MainPageObject {
         return element;
     }
 
+    public void tryClickElementWithFewAttempts(String locator, String errorMessage, int amount_of_attempts)
+    {
+        int current_attempts = 0;
+        boolean need_more_attempts = true;
+
+        while (need_more_attempts) {
+            try {
+                this.waitForElementAndClick(locator, errorMessage, 1);
+                need_more_attempts = false;
+            } catch (Exception e) {
+                if (current_attempts > amount_of_attempts) {
+                    this.waitForElementAndClick(locator, errorMessage, 1);
+                }
+            }
+            ++ current_attempts;
+        }
+    }
+
     public  WebElement waitForElementAndSendKeys(String locator, String value, String errorMessage, long timeOutInSeconds)
     {
         WebElement element = waitForElementPresent(locator, errorMessage, timeOutInSeconds);
@@ -235,6 +253,11 @@ public class MainPageObject {
         By by = this.getLocatorByString(locator);
         List elements = driver.findElements(by);
         return elements.size();
+    }
+
+    public boolean isElementPresent(String locator)
+    {
+        return getAmountOfElements(locator) > 0;
     }
 
     public void assertElementNotPresent(String locator, String errorMessage)

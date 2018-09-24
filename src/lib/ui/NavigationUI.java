@@ -31,12 +31,13 @@ abstract public class NavigationUI extends MainPageObject{
                     "Cannot find 'My lists' button",
                     5
             );
+        } else {
+            this.waitForElementAndClick(
+                    MY_LISTS_LINK,
+                    "Cannot find 'My lists' button",
+                    5
+            );
         }
-        this.waitForElementAndClick(
-                MY_LISTS_LINK,
-                "Cannot find 'My lists' button",
-                5
-        );
     }
 
 }

@@ -115,7 +115,7 @@ abstract public class MyListsPageObject extends MainPageObject {
                     "Cannot find saved article " + article_tittle
             );
         } else {
-            String remove_locator = getRemoveButtonByTittle(REMOVE_FROM_SAVED_BUTTON);
+            String remove_locator = getRemoveButtonByTittle(article_tittle);
             this.waitForElementAndClick(
                     remove_locator,
                     "Cannot find and click button to remove article from list",
@@ -123,13 +123,13 @@ abstract public class MyListsPageObject extends MainPageObject {
             );
         }
 
-            if (Platform.getInstance().isIOS()) {
-                this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find and click article delete button");
-            }
+        if (Platform.getInstance().isIOS()) {
+            this.clickElementToTheRightUpperCorner(article_xpath, "Cannot find and click article delete button");
+        }
 
-            if (Platform.getInstance().isMW()) {
+        if (Platform.getInstance().isMW()) {
                 driver.navigate().refresh();
-            }
+        }
 
         this.waitForArticleToDisappearByTittle(article_tittle);
     }

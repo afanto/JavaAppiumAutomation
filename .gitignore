@@ -19,3 +19,4 @@ out/production/JavaAppiumAutomation/lib/CoreTestCase.class
 out/production/JavaAppiumAutomation/lib/ui/SearchPageObject.class
 *.class
 apks/
+chromedriver

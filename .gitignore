@@ -20,3 +20,5 @@ out/production/JavaAppiumAutomation/lib/ui/SearchPageObject.class
 *.class
 apks/
 chromedriver
+*/libs
+*/out

@@ -68,79 +68,108 @@ public class MyListsTests extends CoreTestCase {
     }
 
     @Test
-    public void testSaveTwoArticlesAndDeleteOne()
-    {
-        String first_substring = "Object-oriented programming language";
-        String second_substring = "Seed of the coffee plant";
+    public void testSaveTwoArticlesToMyList()
+        {
+            String first_substring = "bject-oriented programming language";
+            String second_substring = "eed of the coffee plant";
 
+            SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
-        //add first article
-        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
+            SearchPageObject.initSearchInput();
+            SearchPageObject.typeSearchLine("Java");
+            SearchPageObject.clickByArticleWithSubstring(first_substring);
 
-        SearchPageObject.initSearchInput();
-        SearchPageObject.typeSearchLine("Java");
-        SearchPageObject.clickByArticleWithSubstring(first_substring);
+            ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
+            ArticlePageObject.waitForTittleElement();
+            String first_article_title = ArticlePageObject.getArticleTittle();
 
-        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
-        ArticlePageObject.waitForSubtittleElement(first_substring);
-        String first_article_subtittle = ArticlePageObject.getArticleSubtittle(first_substring);
+            if (Platform.getInstance().isAndroid()) {
+                ArticlePageObject.addArticleToMyList(name_of_folder);
+            } else if (Platform.getInstance().isIOS()) {
+                ArticlePageObject.addArticleToMySaved();
+                ArticlePageObject.closeArticle();
+            } else {
+                ArticlePageObject.addArticleToMySaved();
+                AuthorizationPageObject AuthPageObject = new AuthorizationPageObject(driver);
+                AuthPageObject.clickAuthButton();
+                AuthPageObject.enterLoginData(login, password);
+                AuthPageObject.submitForm();
+                ArticlePageObject.addArticleToMySaved();
 
-        if(Platform.getInstance().isAndroid()) {
-            ArticlePageObject.addArticleToMyList(name_of_folder);
-        } else {
-            ArticlePageObject.addArticleToMySaved();
+                ArticlePageObject.waitForTittleElement();
+
+                assertEquals("We are not on the same page after login",
+                        first_article_title,
+                        ArticlePageObject.getArticleTittle());
+            }
+
             ArticlePageObject.closeArticle();
+
+            //add second article
+            SearchPageObject.initSearchInput();
+            SearchPageObject.typeSearchLine("Coffee bean");
+            SearchPageObject.clickByArticleWithSubstring(second_substring);
+            ArticlePageObject.waitForTittleElement();
+            String second_article_tittle = ArticlePageObject.getArticleTittle();
+            String second_article_subtittle = ArticlePageObject.getArticleSubtittle(second_substring);
+
+            if (Platform.getInstance().isAndroid()) {
+                ArticlePageObject.addArticleToExistingList(name_of_folder);
+            } else if (Platform.getInstance().isIOS()) {
+                ArticlePageObject.addArticleToMySaved();
+                ArticlePageObject.closeArticle();
+            } else {
+                ArticlePageObject.addArticleToMySaved();
+                ArticlePageObject.waitForTittleElement();
+
+                assertEquals("We are not on the same page after login",
+                        second_article_tittle,
+                        ArticlePageObject.getArticleTittle());
+            }
+
+            ArticlePageObject.closeArticle();
+
+            //Go to MY Lists
+            NavigationUI NavigationUI = NavigationUIFactory.get(driver);
+            NavigationUI.openNavigation();
+            NavigationUI.clickMyLists();
+
+            MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+
+
+            if (Platform.getInstance().isAndroid()) {
+                MyListsPageObject.waitForFolderToAppear(name_of_folder);
+                MyListsPageObject.openFolderByName(name_of_folder);
+                MyListsPageObject.waitForArticleToAppearByTittle(first_article_title);
+            }
+
+            if (Platform.getInstance().isIOS() || Platform.getInstance().isAndroid()) {
+                MyListsPageObject.waitForArticleToAppearBySubtitle(first_substring);
+                MyListsPageObject.waitForArticleToAppearBySubtitle(second_substring);
+                MyListsPageObject.swipeByArticleToDeleteWithSubtittle(first_substring);
+                MyListsPageObject.waitForArticleToDisappearBySubtittle(first_substring);
+                MyListsPageObject.waitForArticleToAppearBySubtitle(second_substring);
+                SearchPageObject.clickByArticleWithSubstring(second_substring);
+                ArticlePageObject.waitForSubtittleElement(second_substring);
+                String opened_article_subtittle = ArticlePageObject.getArticleSubtittle(second_substring);
+                assertEquals(
+                    "We see unexpected subtitle!",
+                        second_article_subtittle,
+                        opened_article_subtittle);
+            } else {
+                MyListsPageObject.waitForArticleToAppearByTittle(first_article_title);
+                MyListsPageObject.waitForArticleToAppearByTittle(second_article_tittle);
+                MyListsPageObject.swipeByArticleToDelete(first_article_title);
+                MyListsPageObject.waitForArticleToDisappearByTittle(first_article_title);
+                MyListsPageObject.waitForArticleToAppearByTittle(second_article_tittle);
+                MyListsPageObject.openSavedArticleByTittle(second_article_tittle);
+                ArticlePageObject.waitForTittleElement();
+                String opened_article_tittle = ArticlePageObject.getArticleTittle();
+                assertEquals(
+                        "We see unexpected title!",
+                        second_article_tittle,
+                        opened_article_tittle);
+            }
         }
-
-        ArticlePageObject.closeArticle();
-
-        //add second article
-        SearchPageObject.initSearchInput();
-        SearchPageObject.clearSearchLine();
-        SearchPageObject.typeSearchLine("Coffee bean");
-        SearchPageObject.clickByArticleWithSubstring(second_substring);
-
-        ArticlePageObject.waitForSubtittleElement(second_substring);
-        String second_article_subtitle = ArticlePageObject.getArticleSubtittle(second_substring);
-
-
-        if(Platform.getInstance().isAndroid()) {
-            ArticlePageObject.addArticleToExistingList(name_of_folder);
-        } else {
-            ArticlePageObject.addArticleToMySaved();
-        }
-
-        ArticlePageObject.closeArticle();
-
-        NavigationUI NavigationUI = NavigationUIFactory.get(driver);
-        NavigationUI.clickMyLists();
-
-        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
-
-        if(Platform.getInstance().isAndroid()) {
-            MyListsPageObject.waitForFolderToAppear(name_of_folder);
-            MyListsPageObject.openFolderByName(name_of_folder);
-        }
-
-        MyListsPageObject.waitForArticleToAppearBySubtitle(first_article_subtittle);
-        MyListsPageObject.waitForArticleToAppearBySubtitle(second_article_subtitle);
-        MyListsPageObject.swipeByArticleToDeleteWithSubtittle(first_article_subtittle);
-        MyListsPageObject.waitForArticleToDisappearBySubtittle(first_article_subtittle);
-        MyListsPageObject.waitForArticleToAppearBySubtitle(second_article_subtitle);
-
-        if (Platform.getInstance().isAndroid()) {
-            SearchPageObject.clickByArticleWithSubstring(second_article_subtitle.toLowerCase());
-        } else {
-            SearchPageObject.clickByArticleWithSubstring(second_article_subtitle);
-        }
-
-        ArticlePageObject.waitForSubtittleElement(second_article_subtitle);
-        String opened_article_subtittle = ArticlePageObject.getArticleSubtittle(second_article_subtitle);
-
-        assertEquals(
-                "We see unexpected subtitle!",
-                second_article_subtitle,
-                opened_article_subtittle
-        );
     }
-}
+

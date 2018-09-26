@@ -1,6 +1,5 @@
 package lib.ui;
 
-import io.appium.java_client.AppiumDriver;
 import lib.Platform;
 import org.openqa.selenium.remote.RemoteWebDriver;
 
@@ -24,10 +23,11 @@ abstract public class SearchPageObject extends MainPageObject{
     }
 
     /*TEMPLATES_METHODS*/
-    private static String getResultSearchElement(String substring)
+    private static String getResultSearchElementBySubstring(String substring)
     {
         return SEARCH_RESULT_BY_SUBSTRING_TPL.replace("{SUBSTRING}", substring);
     }
+
     /*TEMPLATES_METHODS*/
 
     public void initSearchInput()
@@ -71,19 +71,19 @@ abstract public class SearchPageObject extends MainPageObject{
 
     public void waitForSearchResult(String substring)
     {
-        String search_result_xpath = getResultSearchElement(substring);
+        String search_result_xpath = getResultSearchElementBySubstring(substring);
         this.waitForElementPresent(search_result_xpath, "Cannot find search result with substring");
     }
 
     public void waitForSearchResultNotPresent(String substring)
     {
-        String search_result_xpath = getResultSearchElement(substring);
+        String search_result_xpath = getResultSearchElementBySubstring(substring);
         this.waitForElementNotPresent(search_result_xpath, "Found search result with substring that should not be present", 5);
     }
 
     public void clickByArticleWithSubstring(String substring)
     {
-        String search_result_xpath = getResultSearchElement(substring);
+        String search_result_xpath = getResultSearchElementBySubstring(substring);
         this.waitForElementAndClick(search_result_xpath, "Cannot find and click search result with substring", 10);
     }
 

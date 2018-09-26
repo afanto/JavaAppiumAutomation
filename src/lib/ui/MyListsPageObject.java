@@ -74,6 +74,16 @@ abstract public class MyListsPageObject extends MainPageObject {
         );
     }
 
+    public void openSavedArticleByTittle(String article_tittle)
+    {
+        String article_xpath = getSavedArticleXpathByTittle(article_tittle);
+        this.waitForElementAndClick(
+                article_xpath,
+                "Cannot find and click saved article by tittle " + article_tittle,
+                15
+        );
+    }
+
     public void waitForArticleToAppearBySubtitle(String article_subtittle)
     {
         String article_xpath = getSavedArticleXpathBySubtittle(article_subtittle);
@@ -128,7 +138,8 @@ abstract public class MyListsPageObject extends MainPageObject {
         }
 
         if (Platform.getInstance().isMW()) {
-                driver.navigate().refresh();
+            driver.navigate().refresh();
+            driver.navigate().refresh();
         }
 
         this.waitForArticleToDisappearByTittle(article_tittle);

@@ -8,7 +8,7 @@ public class AndroidArticlePageObject extends ArticlePageObject  {
 
      static {
          TITTLE = "id:org.wikipedia:id/view_page_title_text";
-         SUBTITTLE_BY_SUBSTRING_TPL = "xpath://*[@text='{SUBSTRING}']";
+         SUBTITTLE_BY_SUBSTRING_TPL = "xpath://*[contains(@text, '{SUBSTRING}')]";
          FOOTER_ELEMENT = "xpath://*[@text='View page in browser']";
          OPTIONS_BUTTON = "xpath://android.widget.ImageView[@content-desc='More options']";
          OPTIONS_CHANGE_LANGUAGE_BUTTON = "xpath://*[@text='Change language']";

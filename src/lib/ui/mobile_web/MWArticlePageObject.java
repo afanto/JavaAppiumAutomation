@@ -10,7 +10,7 @@ public class MWArticlePageObject extends ArticlePageObject {
         SUBTITTLE_BY_SUBSTRING_TPL = "id:{SUBSTRING}";
         FOOTER_ELEMENT = "css:footer";
         OPTIONS_ADD_TO_READING_LIST_BUTTON = "css:#page-actions li#ca-watch.mw-ui-icon-mf-watch button";
-        OPTIONS_REMOVE_FROM_READING_LIST_BUTTON = "css:#page-actions li#ca-watch.mw-ui-icon-mf-watched watched button";
+        OPTIONS_REMOVE_FROM_READING_LIST_BUTTON = "css:#page-actions li#ca-watch.mw-ui-icon-mf-watched button";
     }
 
     public MWArticlePageObject(RemoteWebDriver driver)
